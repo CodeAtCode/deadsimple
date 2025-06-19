@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+markitdown
+pdf-to-markdown
+dotenv
+openai
