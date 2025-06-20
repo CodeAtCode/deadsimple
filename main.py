@@ -30,7 +30,7 @@ async def process(
     try:
         result = MarkItDown(llm_client=LLM_CLIENT, llm_model=LLM_MODEL,enable_plugins=True).convert_stream(stream=BytesIO(data))
 
-        return result.markdown
+        return {"page_content": result.markdown, "metadata": {}}
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error loading document: {e}")
 
