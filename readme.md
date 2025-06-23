@@ -26,6 +26,13 @@ This FastAPI service extracts text content from a wide variety of document forma
 
 ---
 
+## Example usage
+
+* In OpenWebUI, configure for Document Extractor external and as url `http://localhost:5000` (you can change this based on your needs)
+* Locally, `curl -X POST http://localhost:5000/process -H "Content-Type: application/pdf" --data-binary @file.pdf`
+
+---
+
 ## 🧪 Setup (with virtual environment)
 
 ```bash
