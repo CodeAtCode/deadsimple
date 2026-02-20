@@ -4,3 +4,9 @@ markitdown
 pdf-to-markdown
 dotenv
 openai
+
+# Optional backends (pending: pip install)
+ocrflux>=0.0.0
+doclings>=0.0.0
+# optional: docstrange>=0.0.0
+# optional: marker>=0.0.0

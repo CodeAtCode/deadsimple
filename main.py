@@ -10,7 +10,14 @@ import os
 
 load_dotenv()
 
+import process
+import doclings_process
+
 app = FastAPI(title="DeadSimple")
+
+app.include_router(process.router)
+app.include_router(doclings_process.router)
+
 LLM_CLIENT = ""
 LLM_MODEL = ""
 if os.getenv("LLM_TOKEN") != "":

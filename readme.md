@@ -50,3 +50,34 @@ pip install -r requirements.txt
 
 ./main.py
 ```
+
+## Optional Backends
+
+The service can work with optional backends that provide extra capabilities such as OCR, document linking, and content analysis. These backends are not required for basic operation; the API works out‑of‑the‑box.
+
+**Available backends**
+
+- `ocrflux` – OCR extraction backend
+- `doclings` – Document linking backend
+- `docstrange` – Specialized document processing backend
+- `marker` – Marker based backend
+
+**Installation**
+
+Each backend is provided as an extra in *pyproject.toml*. Install the desired backend with pip, for example:
+
+```bash
+pip install .[ocrflux]
+pip install .[doclings]
+pip install .[docstrange]
+pip install .[marker]
+```
+
+You can also install multiple extras at once:
+
+```bash
+pip install .[ocrflux,doclings,docstrange,marker]
+```
+
+If no extra is installed, the core service runs without these features.
+

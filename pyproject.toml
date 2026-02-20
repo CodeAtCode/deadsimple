@@ -1,0 +1,28 @@
+[project]
+name = "deadsimple"
+version = "0.1.0"
+description = "Dead simple document processing with multiple backend support"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "markitdown",
+    "pdf-to-markdown",
+    "python-dotenv",
+    "openai",
+]
+
+[project.optional-dependencies]
+doclings = [
+    "doclings>=0.0.0",
+]
+ocrflux = [
+    "ocrflux>=0.0.0",
+]
+docstrange = [
+    "docstrange>=0.0.0",
+]
+marker = [
+    "marker>=0.0.0",
+]
