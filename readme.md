@@ -42,13 +42,30 @@ markitdown supports these file types out of the box:
 
 ## 🌐 Vision LLM Mode
 
-To use vision mode (scanned PDFs/images → text), set these environment variables:
+Vision mode is configured in [`backends.ini`](backends.ini) under the `[llm]` section:
 
-```bash
-export LLM_TOKEN="your_api_key"       # OpenAI or compatible API key
-export LLM_MODEL="gpt-4o"             # model name (supports vision)
-export LLM_URL="https://api.openai.com/v1"  # API endpoint (default)
+```ini
+[llm]
+# Set these values to enable vision/OCR mode
+token = your_api_key          # OpenAI or compatible API key
+model = gpt-4o                # Model name (supports vision)
+url = https://api.openai.com/v1  # API endpoint
 ```
+
+**To enable vision mode:**
+1. Open `backends.ini`
+2. Uncomment and set the `[llm]` section values
+3. Restart the server
+
+**Example with local Ollama:**
+```ini
+[llm]
+token = ollama
+model = llava
+url = http://localhost:11434/v1
+```
+
+**Leave `[llm]` empty** to disable vision mode (uses markitdown without LLM).
 
 ---
 

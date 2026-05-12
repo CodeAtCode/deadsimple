@@ -40,18 +40,24 @@ class BackendInterface(ABC):
         pass
 
 
-def _get_llm_client():
-    """Get OpenAI client if LLM_TOKEN is configured."""
-    llm_token = os.getenv("LLM_TOKEN", "")
-    llm_url = os.getenv("LLM_URL", "https://api.openai.com/v1")
-    llm_model = os.getenv("LLM_MODEL", "")
+def _get_llm_config():
+    """Get LLM configuration from backends.ini [llm] section."""
+    llm_section = _CONFIG.get("llm", fallback={})
+    llm_token = llm_section.get("token", "").strip()
+    llm_url = llm_section.get("url", "https://api.openai.com/v1").strip()
+    llm_model = llm_section.get("model", "").strip()
+    return llm_token, llm_url, llm_model
 
+
+def _get_llm_client():
+    """Get OpenAI client if LLM_TOKEN is configured in backends.ini."""
+    llm_token, llm_url, llm_model = _get_llm_config()
+    
     if not llm_token:
         return None, None
-
+    
     client = OpenAI(api_key=llm_token, base_url=llm_url)
     return client, llm_model
-
 
 def _detect_file_format(stream) -> str:
     """
