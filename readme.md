@@ -16,13 +16,8 @@ FastAPI service for extracting text from PDF, DOCX, PPTX, EPUB, HTML, TXT with *
 ## 📦 Installation
 
 ```bash
-# Install as local package
 pip install -e .
 ```
-
-### Dependencies
-
-- `fastapi`, `uvicorn`, `markitdown`, `pdf-to-markdown`, `openai` are **required**
 
 ### Supported Formats
 
@@ -54,53 +49,13 @@ export LLM_TOKEN="your_api_key"       # OpenAI or compatible API key
 export LLM_MODEL="gpt-4o"             # model name (supports vision)
 export LLM_URL="https://api.openai.com/v1"  # API endpoint (default)
 ```
-## 🧪 Setup (with virtual environment)
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-
-pip install -e .
-
-./main.py
-```
-
-## Optional Backends
-
-The service can work with optional backends that provide extra capabilities such as OCR, document linking, and content analysis. These backends are not required for basic operation; the API works out‑of‑the‑box.
-
-**Available backends**
-
-- `ocrflux` – OCR extraction backend
-- `doclings` – Document linking backend
-- `docstrange` – Specialized document processing backend
-- `marker` – Marker based backend
-
-**Installation**
-
-Each backend is provided as an extra in *pyproject.toml*. Install the desired backend with pip, for example:
-
-```bash
-pip install .[ocrflux]
-pip install .[doclings]
-pip install .[docstrange]
-pip install .[marker]
-```
-
-You can also install multiple extras at once:
-
-```bash
-pip install .[ocrflux,doclings,docstrange,marker]
-```
-
-If no extra is installed, the core service runs without these features.
 
 ---
 
 ## 🧪 Running
 
 ```bash
-python main.py
+python deadsimple/main.py
 ```
 
 API available at `http://localhost:5000`
@@ -131,4 +86,32 @@ curl -X POST http://localhost:5000/process \
 
 ```bash
 pytest tests/
+```
+
+## Optional Backends
+
+The service supports optional backends that provide extra capabilities such as OCR, document linking, and content analysis. These backends are not required for basic operation; markitdown is always included.
+
+**Available backends**
+
+- `ocrflux` – OCR extraction backend
+- `doclings` – Document linking backend
+- `docstrange` – Specialized document processing backend
+- `marker` – Marker based backend
+
+**Installation**
+
+Each backend is provided as an extra in *pyproject.toml*. Install the desired backend with pip, for example:
+
+```bash
+pip install -e ".[ocrflux]"
+pip install -e ".[doclings]"
+pip install -e ".[docstrange]"
+pip install -e ".[marker]"
+```
+
+You can also install multiple extras at once:
+
+```bash
+pip install -e ".[ocrflux,doclings,docstrange,marker]"
 ```
