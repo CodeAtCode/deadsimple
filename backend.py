@@ -7,12 +7,14 @@ a factory function to get backend instances.
 """
 
 import importlib.util
+import os
 from abc import ABC, abstractmethod
 from configparser import ConfigParser
 from pathlib import Path
 from typing import Optional
 
 from fastapi import HTTPException
+from openai import OpenAI
 
 # Read config once at module import (static)
 _CONFIG = ConfigParser()
@@ -34,11 +36,26 @@ class BackendInterface(ABC):
         pass
 
 
+def _get_llm_client():
+    llm_token = os.getenv("LLM_TOKEN", "")
+    llm_url = os.getenv("LLM_URL", "https://api.openai.com/v1")
+    llm_model = os.getenv("LLM_MODEL", "")
+
+    if not llm_token:
+        return None, None
+
+    client = OpenAI(api_key=llm_token, base_url=llm_url)
+    return client, llm_model
+
+
 class MarkItDownBackend(BackendInterface):
     """MarkItDown backend implementation."""
 
     def __init__(self, llm_client=None, llm_model=None):
         from markitdown import MarkItDown as MarkItDownClass
+
+        if llm_client is None:
+            llm_client, llm_model = _get_llm_client()
 
         self._backend = MarkItDownClass(
             llm_client=llm_client, llm_model=llm_model, enable_plugins=True

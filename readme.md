@@ -34,9 +34,24 @@ This FastAPI service extracts text content from a wide variety of document forma
 ### Env
 
 * PORT=5000
-* LLM_TOKEN # You can use a LLM to read images
-* LLM_MODEL # The LLM model
-* LLM_URL # The URL of an OpenAI compatible provider
+* LLM_TOKEN # OpenAI API key (or compatible provider) for vision/OCR
+* LLM_MODEL # Model name (e.g., gpt-4o, gpt-4o-mini)
+* LLM_URL # OpenAI-compatible endpoint (default: https://api.openai.com/v1)
+
+### LLM Mode (Vision OCR)
+
+By setting `LLM_TOKEN`, `LLM_MODEL`, and optionally `LLM_URL`, the service uses **markitdown** with LLM vision capabilities:
+
+- Scanned PDFs and images are processed via the LLM's vision API
+- Each page is sent as an image to the LLM for text extraction
+- Works with any OpenAI-compatible provider (OpenAI, Ollama, Groq, etc.)
+
+**Example for local Ollama:**
+```
+LLM_TOKEN=ollama
+LLM_MODEL=llava
+LLM_URL=http://localhost:11434/v1
+```
 
 ---
 
