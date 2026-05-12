@@ -1,60 +1,59 @@
-# D(ocument)e(xtractor)adSimple
+# Deadsimple - Document Extractor
 
-This FastAPI service extracts text content from a wide variety of document formats (PDF, DOCX, PPTX, EPUB, HTML, TXT, etc.) using [`markitdown`](https://github.com/markitdown/markitdown). It returns the content as an array of strings, one for each logical page, slide, or section.
+FastAPI service for extracting text from PDF, DOCX, PPTX, EPUB, HTML, TXT with **multi-backend architecture**.
 
 ---
 
 ## 🚀 Features
 
-- Supports multiple document formats
-- Returns page-wise content as a JSON array
-- Automatically detects file type via content-type
-- FastAPI + Uvicorn app, easy to deploy
+- **Multiple file formats**: Supports PDF, DOCX, PPTX, EPUB, HTML, Markdown, TXT, CSV, and more
+- **Vision LLM**: Optional OpenAI-compatible API for extracting text from scanned PDFs/images
+- **Page-wise output**: Returns structured output (one per page/slide)
+- **Extensible backend architecture**: Designed for easy addition of new backends
 
 ---
 
-## 📦 Supported File Types
+## 📦 Installation
 
-- PDF (`application/pdf`)
-- DOCX / Word
-- PPTX / PowerPoint
-- EPUB
-- HTML
-- Markdown
-- TXT
-- CSV
-
----
-
-## Example usage
-
-* In OpenWebUI, configure for Document Extractor external and as url `http://localhost:5000` (you can change this based on your needs)
-* Locally, `curl -X POST http://localhost:5000/process -H "Content-Type: application/pdf" --data-binary @file.pdf`
-
-### Env
-
-* PORT=5000
-* LLM_TOKEN # OpenAI API key (or compatible provider) for vision/OCR
-* LLM_MODEL # Model name (e.g., gpt-4o, gpt-4o-mini)
-* LLM_URL # OpenAI-compatible endpoint (default: https://api.openai.com/v1)
-
-### LLM Mode (Vision OCR)
-
-By setting `LLM_TOKEN`, `LLM_MODEL`, and optionally `LLM_URL`, the service uses **markitdown** with LLM vision capabilities:
-
-- Scanned PDFs and images are processed via the LLM's vision API
-- Each page is sent as an image to the LLM for text extraction
-- Works with any OpenAI-compatible provider (OpenAI, Ollama, Groq, etc.)
-
-**Example for local Ollama:**
-```
-LLM_TOKEN=ollama
-LLM_MODEL=llava
-LLM_URL=http://localhost:11434/v1
+```bash
+# Install as local package
+pip install -e .
 ```
 
+### Dependencies
+
+- `fastapi`, `uvicorn`, `markitdown`, `pdf-to-markdown`, `openai` are **required**
+
+### Supported Formats
+
+markitdown supports these file types out of the box:
+
+| Format | MIME Type |
+|--------|-----------|
+| PDF | `application/pdf` |
+| DOCX | `application/vnd.openxmlformats-officedocument.wordprocessingml.document` |
+| PPTX | `application/vnd.openxmlformats-officedocument.presentationml.presentation` |
+| EPUB | `application/epub+zip` |
+| HTML | `text/html` |
+| Markdown | `text/markdown` or `text/x-markdown` |
+| TXT | `text/plain` |
+| CSV | `text/csv` |
+| DOC (legacy) | `application/msword` |
+| PPT (legacy) | `application/vnd.ms-powerpoint` |
+| XLSX | `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet` |
+| XLS (legacy) | `application/vnd.ms-excel` |
+
 ---
 
+## 🌐 Vision LLM Mode
+
+To use vision mode (scanned PDFs/images → text), set these environment variables:
+
+```bash
+export LLM_TOKEN="your_api_key"       # OpenAI or compatible API key
+export LLM_MODEL="gpt-4o"             # model name (supports vision)
+export LLM_URL="https://api.openai.com/v1"  # API endpoint (default)
+```
 ## 🧪 Setup (with virtual environment)
 
 ```bash
@@ -96,3 +95,40 @@ pip install .[ocrflux,doclings,docstrange,marker]
 
 If no extra is installed, the core service runs without these features.
 
+---
+
+## 🧪 Running
+
+```bash
+python main.py
+```
+
+API available at `http://localhost:5000`
+
+---
+
+## 📡 API
+
+### Process Document
+
+```bash
+curl -X POST http://localhost:5000/process \
+  -H "Content-Type: application/pdf" \
+  --data-binary @document.pdf
+```
+
+**Response:**
+```json
+{
+  "page_content": "page 1 text\n---\npagina 2 text",
+  "metadata": {}
+}
+```
+
+---
+
+## 🧪 Testing
+
+```bash
+pytest tests/
+```
